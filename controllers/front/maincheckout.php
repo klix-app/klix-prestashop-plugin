@@ -8,7 +8,7 @@ use SpellPayment\Repositories\OrderIdToSpellUuid;
 
 class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontController
 {
-    const SPELL_MODULE_VERSION = 'v1.1.1';
+    const SPELL_MODULE_VERSION = 'v1.1.2';
 
     private function getAmount()
     {
