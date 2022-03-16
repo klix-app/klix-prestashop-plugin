@@ -34,7 +34,7 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.1.1';
+        $this->version = '1.1.2';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->author = 'Klix';
         $this->controllers = ['validation'];
@@ -161,7 +161,9 @@ class SpellPayment extends PaymentModule
 
         return parent::install()
             && $this->registerHook('paymentOptions')
-            && $this->registerHook('paymentReturn');
+            && $this->registerHook('paymentReturn')
+            && $this->registerHook('Header')
+            && $this->registerHook('displayProductAdditionalInfo');
     }
 
     public function uninstall()
@@ -169,6 +171,8 @@ class SpellPayment extends PaymentModule
         OrderIdToSpellUuid::drop();
         return $this->unregisterHook('paymentOptions')
             && $this->unregisterHook('paymentReturn')
+            && $this->unregisterHook('Header')
+            && $this->unregisterHook('displayProductAdditionalInfo')
             && parent::uninstall();
     }
 
@@ -293,5 +297,28 @@ class SpellPayment extends PaymentModule
         }
 
         return 'Thanks for using Klix E-commerce Gateway';
+    }
+
+    public function hookDisplayProductAdditionalInfo($params)
+    {
+        if(!Configuration::get('SPELLPAYMENT_ACTIVE_MODE'))
+            return '';
+        $product = $this->context->controller->getProduct();        
+        $product_price=bcmul((string) $product->price,'100');
+        $brand_id=Configuration::get('SPELLPAYMENT_SHOP_ID');
+        $language=SpellHelper::parseLanguage(Context::getContext()->language->iso_code);
+
+        $widget_html = sprintf('<klix-pay-later amount="%s" brand_id="%s" 
+                language="%s" theme="light" view="product">
+                </klix-pay-later>',$product_price,$brand_id,$language);
+        return $widget_html;
+    }
+
+    public function hookHeader($params)
+    {
+        if(!Configuration::get('SPELLPAYMENT_ACTIVE_MODE'))
+            return '';
+        return '<script type="module" src="https://klix.blob.core.windows.net/public/pay-later-widget/build/klix-pay-later-widget.esm.js"></script>
+        <script nomodule="" src="https://klix.blob.core.windows.net/public/pay-later-widget/build/klix-pay-later-widget.js"></script>';
     }
 }
