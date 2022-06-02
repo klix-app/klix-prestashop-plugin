@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
     <name>spellpayment</name>
-    <displayName><![CDATA[Klix E-commerce Gateway]]></displayName>
-    <version><![CDATA[1.1.2]]></version>
-    <description><![CDATA[Klix E-commerce Gateway]]></description>
+    <displayName><![CDATA[Klix E-commerce gateway]]></displayName>
+    <version><![CDATA[1.1.3]]></version>
+    <description><![CDATA[Klix E-commerce gateway]]></description>
     <author><![CDATA[Klix]]></author>
     <tab><![CDATA[payments_gateways]]></tab>
 	<confirmUninstall><![CDATA[Are you sure you want to delete your details?]]></confirmUninstall>

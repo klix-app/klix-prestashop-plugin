@@ -1,4 +1,5 @@
 <?php
+
 namespace SpellPayment;
 
 class SpellAPI
@@ -18,15 +19,15 @@ class SpellAPI
         $this->debug = $debug;
     }
 
-    public function create_payment($params)
+    public function createPayment($params)
     {
-        $this->log_info("loading payment form");
+        $this->logInfo("loading payment form");
         return $this->call('POST', '/purchases/', $params);
     }
 
-    public function payment_methods($currency, $language)
+    public function paymentMethods($currency, $language)
     {
-        $this->log_info("fetching payment methods");
+        $this->logInfo("fetching payment methods");
         return $this->call(
             'GET',
             "/payment_methods/?brand_id={$this->brand_id}&currency={$currency}&language={$language}"
@@ -38,11 +39,11 @@ class SpellAPI
         return $this->call('GET', "/purchases/{$payment_id}/");
     }
 
-    public function was_payment_successful($payment_id)
+    public function wasPaymentSuccessful($payment_id)
     {
-        $this->log_info(sprintf("validating payment: %s", $payment_id));
+        $this->logInfo(sprintf("validating payment: %s", $payment_id));
         $result = $this->purchases($payment_id);
-        $this->log_info(sprintf(
+        $this->logInfo(sprintf(
             "success check result: %s",
             var_export($result, true)
         ));
@@ -65,15 +66,15 @@ class SpellAPI
                 'Authorization: ' . "Bearer " . $private_key,
             ]
         );
-        $this->log_info(sprintf('received response: %s', $response));
+        $this->logInfo(sprintf('received response: %s', $response));
         $result = json_decode($response, true);
         if (!$result) {
-            $this->log_error('JSON parsing error/NULL API response');
+            $this->logError('JSON parsing error/NULL API response');
             return null;
         }
 
         if (!empty($result['errors'])) {
-            $this->log_error('API error', $result['errors']);
+            $this->logError('API error', $result['errors']);
             return null;
         }
 
@@ -95,13 +96,10 @@ class SpellAPI
         }
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
-        // curl_setopt($conn, CURLOPT_FAILONERROR, false);
-        // curl_setopt($conn, CURLOPT_HTTP200ALIASES, (array) 400);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        $this->log_info(sprintf(
+        $this->logInfo(sprintf(
             "%s `%s`\n%s\n%s",
             $method,
             $url,
@@ -114,13 +112,13 @@ class SpellAPI
             case 201:
                 break;
             default:
-                $this->log_error(
+                $this->logError(
                     sprintf("%s %s: %d", $method, $url, $code),
                     $response
                 );
         }
         if (!$response) {
-            $this->log_error('curl', curl_error($ch));
+            $this->logError('curl', curl_error($ch));
         }
 
         curl_close($ch);
@@ -128,16 +126,16 @@ class SpellAPI
         return $response;
     }
 
-    public function log_info($text, $error_data = null)
+    public function logInfo($text)
     {
         if ($this->debug) {
-            $this->logger->log("Klix E-commerce Gateway INFO: " . $text . ";");
+            $this->logger->log("Klix E-commerce gateway INFO: " . $text . ";");
         }
     }
 
-    public function log_error($error_text, $error_data = null)
+    public function logError($error_text, $error_data = null)
     {
-        $error_text = "Klix E-commerce Gateway ERROR: " . $error_text . ";";
+        $error_text = "Klix E-commerce gateway ERROR: " . $error_text . ";";
         if ($error_data) {
             $error_text .= " ERROR DATA: " . var_export($error_data, true) . ";";
         }

@@ -1,14 +1,17 @@
 <?php
+
 namespace SpellPayment;
 
-require_once(__DIR__.'/DefaultLogger.php');
+require_once(__DIR__ . '/DefaultLogger.php');
+
 use SpellPayment\DefaultLogger;
 
-require_once(__DIR__.'/SpellAPI.php');
+require_once(__DIR__ . '/SpellAPI.php');
+
 use SpellPayment\SpellAPI;
 
 /**
- * helper functions to adapt payload returned by the Spell API
+ * helper functions to adapt payload returned by the Klix API
  */
 class SpellHelper
 {
@@ -40,6 +43,29 @@ class SpellHelper
                             ['value' => false],
                         ],
                         'desc' => 'If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.',
+                    ],
+                    [
+                        'type' => 'switch',
+                        'label' => 'Enable one click payment',
+                        'name' => 'SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED',
+                        'values' => [
+                            ['value' => true],
+                            ['value' => false],
+                        ],
+                    ],
+                    [
+                        'type' => 'text',
+                        'label' => 'Change payment method title',
+                        'name' => 'SPELLPAYMENT_METHOD_TITLE',
+                        'required' => false,
+                        'desc' => 'If not set, "Select payment method" will be used. Ignored if payment method selection is disabled.',
+                    ],
+                    [
+                        'type' => 'text',
+                        'label' => 'Change payment method description',
+                        'name' => 'SPELLPAYMENT_METHOD_DESCRIPTION',
+                        'required' => false,
+                        'desc' => 'If not set, "Choose payment method on next page" will be used. Ignored if payment method selection is enabled.',
                     ],
                     [
                         'type' => 'text',
@@ -78,7 +104,7 @@ class SpellHelper
             $name = $field['name'];
             $value = \Tools::getValue($name, \Configuration::get($name, null));
             if (($field['required'] ?? false) && !$value) {
-                $errors[] = 'Field '.$name.' is mandatory!';
+                $errors[] = 'Field ' . $name . ' is mandatory!';
             }
             $configValues[$name] = $value;
         }
@@ -91,13 +117,15 @@ class SpellHelper
         $secret_code = $configValues['SPELLPAYMENT_SHOP_PASS'];
         $debug = $configValues['SPELLPAYMENT_ENABLE_LOGGING'] ? true : false;
 
-        $logger = new DefaultLogger(new class () {
-            function info($msg) {
+        $logger = new DefaultLogger(new class()
+        {
+            public function info($msg)
+            {
                 \PrestaShopLogger::addLog($msg);
             }
         });
         if (!$secret_code || !$brand_id) {
-            throw new \Exception('Shop authentication token/brand id of Klix E-commerce Gateway are not set');
+            throw new \Exception('Shop authentication token/brand id of Klix E-commerce gateway are not set');
         }
 
         return new SpellAPI($secret_code, $brand_id, $logger, $debug);
@@ -116,7 +144,8 @@ class SpellHelper
         return $country_options;
     }
 
-    public static function getPreselectedCountry($detected_country, $country_options) {
+    public static function getPreselectedCountry($detected_country, $country_options)
+    {
         $selected_country = '';
         $any_index = array_search('any', $country_options);
         if (in_array($detected_country, $country_options)) {

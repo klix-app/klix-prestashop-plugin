@@ -1,11 +1,10 @@
 <?php
 
 /**
- * Main checkout listed in the class.
+ * Callback method listed in the class.
  *
  * @package Spellpayment
  */
-
 require_once(__DIR__ . '/../../lib/SpellPayment/SpellHelper.php');
 
 use SpellPayment\SpellHelper;
@@ -14,28 +13,101 @@ require_once(__DIR__ . '/../../lib/SpellPayment/Repositories/OrderIdToSpellUuid.
 
 use SpellPayment\Repositories\OrderIdToSpellUuid;
 
-class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontController
+class spellpaymentpdpcheckoutModuleFrontController extends \ModuleFrontController
 {
     const SPELL_MODULE_VERSION = 'v1.1.3';
-
-    /**
-     * Function for get amount of cart.
-     */
-    private function getAmount()
+    public function initContent()
     {
-        return $this->context->cart->getOrderTotal(true, \Cart::BOTH);
+        parent::initContent();
+        $cart = null;
+        if (isset($_REQUEST['product_id'])) {
+            $cart = $this->createCartFromProduct();
+        }
+        list($configValues, $errors) = SpellHelper::getConfigFieldsValues();
+        $spell = SpellHelper::getSpell($configValues);
+
+        if (!$cart) {
+            $cart = $this->context->cart;
+        }
+
+        $this->context->cart->secure_key = md5(uniqid(rand(), true));
+        $this->context->cart->update();
+
+        $paymentParams = $this->makePaymentParams($configValues);
+
+        $paymentRs = $spell->createPayment($paymentParams);
+
+        $checkout_url = $paymentRs['checkout_url'] ?? null;
+        $spell_payment_uuid = $paymentRs['id'] ?? null;
+        if (!$spell_payment_uuid) {
+            $msg = 'Could not init payment in service - ' . json_encode($paymentRs);
+            throw new \Exception($msg);
+        }
+        OrderIdToSpellUuid::addNew([
+            'order_id' => $cart->id,
+            'spell_payment_uuid' => $spell_payment_uuid,
+        ]);
+        \Tools::redirect($checkout_url, '');
     }
 
-    /**
-     * Function for making payment params
-     */
-    private function makePaymentParams($configValues, $order)
+
+    private function createCartFromProduct()
+    {
+        $cart = null;
+        $id_product = @$_REQUEST['product_id'];
+
+        //id_product_attribute
+        $id_product_attribute = @$_REQUEST['id_product_attribute'];
+
+        //Qty
+        $qty = @$_REQUEST['qty'];
+
+        // Language id
+        $lang_id = (int) \Configuration::get('PS_LANG_DEFAULT');
+
+        // Load product object
+        $product = new \Product($id_product, false, $lang_id);
+
+        // Validate product object
+        if (\Validate::isLoadedObject($product)) {
+            if (!$this->context->cart->id) {
+                if (\Context::getContext()->cookie->id_guest) {
+                    $guest = new \Guest(\Context::getContext()->cookie->id_guest);
+                    $this->context->cart->mobile_theme = $guest->mobile_theme;
+                }
+            }
+            // $cookie = \Context::getContext()->cookie;
+            // if ((int)$cookie->id_cart) {
+            //     $cart = new \Cart((int)$cookie->id_cart);
+            // }
+            if (!isset($cart) || !$cart->id) {
+                if (\Context::getContext()->cookie->id_guest) {
+                    $guest = new \Guest(\Context::getContext()->cookie->id_guest);
+                    $this->context->cart->mobile_theme = $guest->mobile_theme;
+                }
+                $this->context->cart->add();
+                if ($this->context->cart->id) {
+                    $this->context->cookie->id_cart = (int)$this->context->cart->id;
+                }
+                $cart = $this->context->cart;
+            }
+            $updateQuantity = $cart->updateQty((int)($qty), (int)($id_product), (int)($id_product_attribute), false, 'up');
+            $cart->id_customer = (int)($this->context->cookie->id_customer);
+            $cart->update();
+        }
+        return $cart;
+    }
+
+
+    private function getAmount()
+    {
+        return $this->context->cart->getOrderTotal(true, \Cart::BOTH_WITHOUT_SHIPPING);
+    }
+
+    private function makePaymentParams($configValues)
     {
         $cart = $this->context->cart;
         $customer = new \Customer((int)($cart->id_customer));
-        $billingAddress = new \Address(intval($cart->id_address_invoice));
-        $shippingAddress = new \Address(intval($cart->id_address_delivery));
-        $country = \Country::getIsoById((int)$billingAddress->id_country);
         $notes = $this->getNotes($cart);
 
         $currency = new \Currency((int)($cart->id_currency));
@@ -44,26 +116,25 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
         // ignoring Yen, Rubles, Dinars, etc - can't find API to get decimal
         // places in Prestashop, and it was done same way in other modules anyway
         $amountInCents = intval(round($this->getAmount() * 100));
-
         $redirect_url = $this->context->link->getModuleLink(
             $this->module->name,
             'checkoutcallback',
-            ['order_id' => $order->id]
+            ['cart_id' => $cart->id]
         );
         $failure_url = $this->context->link->getModuleLink(
             $this->module->name,
             'checkoutcallback',
-            ['order_id' => $order->id, 'restore_cart_id' => $cart->id]
+            ['cart_id' => $cart->id, 'restore_cart_id' => $cart->id]
         );
         $cancel_url = $this->context->link->getModuleLink(
             $this->module->name,
             'checkoutcallback',
-            ['order_id' => $order->id, 'restore_cart_id' => $cart->id, 'is_cancel' => true]
+            ['cart_id' => $cart->id, 'restore_cart_id' => $cart->id, 'is_cancel' => true]
         );
         $callback_url = $this->context->link->getModuleLink(
             $this->module->name,
             'checkoutcallback',
-            ['order_id' => $order->id, 'is_module_callback' => true]
+            ['cart_id' => $cart->id, 'is_module_callback' => true]
         );
 
         $lang_code = SpellHelper::parseLanguage(\Context::getContext()->language->iso_code);
@@ -75,7 +146,7 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
             'cancel_redirect' => $cancel_url,
             'creator_agent' => 'PrestashopModule ' . self::SPELL_MODULE_VERSION,
             'platform' => 'prestashop',
-            'reference' => $order->reference,
+            // 'reference' => $cart->reference,
             'purchase' => [
                 "currency" => $currency_code,
                 "language" => $lang_code,
@@ -91,27 +162,14 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
             ],
             'brand_id' => $configValues['SPELLPAYMENT_SHOP_ID'],
             'client' => [
-                'email' => $customer->email,
-                'phone' => ($billingAddress->phone) ?: $billingAddress->phone_mobile,
-                'full_name' => $billingAddress->firstname . ' ' . $billingAddress->lastname,
-                'street_address' => $billingAddress->address1 . ' ' . $billingAddress->address2,
-                'country' => $country,
-                'city' => $billingAddress->city,
-                'zip_code' => $billingAddress->postcode,
-                'shipping_street_address' => $shippingAddress->address1 . ' ' . $shippingAddress->address2,
-                'shipping_country' => $country,
-                'shipping_city' => $shippingAddress->city,
-                'shipping_zip_code' => $shippingAddress->postcode,
+                'email' => $customer->id ? $customer->email : 'dummy@data.com',
             ],
+            'payment_method_whitelist' => ['klix']
         ];
 
         return $params;
     }
 
-
-    /**
-     * Function for getting Shipping packages.
-     */
     private function getShippingPackages()
     {
         $result = array();
@@ -148,9 +206,6 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
         return $result;
     }
 
-    /**
-     * Function for get the notes from the cart.
-     */
     private function getNotes($cart)
     {
         $products = $cart->getProducts(true);
@@ -165,54 +220,5 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
             }
         }
         return $nameString;
-    }
-
-    /**
-     * Init. function of the checkout controller.
-     */
-    public function initContent()
-    {
-        parent::initContent();
-        list($configValues, $errors) = SpellHelper::getConfigFieldsValues();
-        $spell = SpellHelper::getSpell($configValues);
-        $currency = new \Currency((int)($this->context->cart->id_currency));
-
-        $this->context->cart->secure_key = md5(uniqid(rand(), true));
-        $this->context->cart->update();
-
-        $this->module->validateOrder(
-            $this->context->cart->id,
-            \Configuration::get('SPELLPAYMENT_STATE_WAITING'),
-            $this->getAmount(),
-            'Klix E-commerce gateway',
-            null,
-            array(),
-            (int)$currency->id,
-            false,
-            $this->context->cart->secure_key
-        );
-        $order = new \Order($this->module->currentOrder);
-        $paymentParams = $this->makePaymentParams($configValues, $order);
-
-        $paymentRs = $spell->createPayment($paymentParams);
-
-        $checkout_url = $paymentRs['checkout_url'] ?? null;
-        $spell_payment_uuid = $paymentRs['id'] ?? null;
-        if (!$spell_payment_uuid) {
-            $msg = 'Could not init payment in service - ' . json_encode($paymentRs);
-            throw new \Exception($msg);
-        }
-
-        OrderIdToSpellUuid::addNew([
-            'order_id' => $order->id,
-            'spell_payment_uuid' => $spell_payment_uuid,
-        ]);
-
-        $spell_payment_method = \Tools::getValue('spell_payment_method', '');
-        if ($spell_payment_method) {
-            $checkout_url .= '?preferred=' . $spell_payment_method;
-        }
-
-        \Tools::redirect($checkout_url, '');
     }
 }
