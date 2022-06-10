@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" original="modules/spellpayment/spellpayment.php" target-language="ru-RU" datatype="plaintext">
+    <body>
+      <trans-unit id="klix-ru-7">
+        <source>Pay now</source>
+        <target>Оплати сразу</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

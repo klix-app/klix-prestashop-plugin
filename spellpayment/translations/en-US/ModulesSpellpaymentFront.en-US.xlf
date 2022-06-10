@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" original="modules/spellpayment/spellpayment.php" target-language="en-US" datatype="plaintext">
+    <body>
+      <trans-unit id="klix-en-1">
+        <source>Other</source>
+        <target>Other</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klix-en-2">
+        <source>Latvia</source>
+        <target>Latvia</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klix-en-3">
+        <source>Lithuania</source>
+        <target>Lithuania</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klix-en-4">
+        <source>Estonia</source>
+        <target>Estonia</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klix-en-5">
+        <source>Select payment method</source>
+        <target>Select payment method</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klix-en-6">
+        <source>Choose payment method on next page</source>
+        <target>Choose payment method on next page</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

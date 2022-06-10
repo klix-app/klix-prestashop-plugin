@@ -48,6 +48,18 @@ class SpellPayment extends PaymentModule
         $this->display = true;
 
         parent::__construct();
+
+        $this->supportCountryTranslationsDiscovery();
+    }
+    public function isUsingNewTranslationSystem() {
+        return true;
+    }
+
+    private function supportCountryTranslationsDiscovery() {
+        $this->trans('Other', [], 'Modules.Spellpayment.Front');
+        $this->trans('Latvia', [], 'Modules.Spellpayment.Front');
+        $this->trans('Lithuania', [], 'Modules.Spellpayment.Front');
+        $this->trans('Estonia', [], 'Modules.Spellpayment.Front');
     }
 
     private function getDetectedCountry()
@@ -86,10 +98,13 @@ class SpellPayment extends PaymentModule
 
         $payment_method_selection_enabled = $configValues['SPELLPAYMENT_METHOD_SELECTION_ENABLED'];
         $country_options = SpellHelper::getCountryOptions($payment_methods);
+        $this->translateCountryNames($payment_methods);
+
+        $payment_method_title = $this->trans('Select payment method', [], 'Modules.Spellpayment.Front');
+        $payment_method_description = $this->trans('Choose payment method on next page', [], 'Modules.Spellpayment.Front');
+
         return [
-            'title' => $payment_method_selection_enabled
-                ? ($configValues['SPELLPAYMENT_METHOD_TITLE'] ?: 'Select payment method')
-                : ($configValues['SPELLPAYMENT_METHOD_DESCRIPTION'] ?: 'Choose payment method on next page'),
+            'title' => $payment_method_selection_enabled ? $payment_method_title : $payment_method_description,
             'payment_method_selection_enabled' => $payment_method_selection_enabled,
             'payment_methods_api_data' => $payment_methods,
             'country_options' => $country_options,
@@ -98,7 +113,11 @@ class SpellPayment extends PaymentModule
             'selected_country' => SpellHelper::getPreselectedCountry($this->getDetectedCountry(), $country_options),
         ];
     }
-
+    private function translateCountryNames(&$payment_methods) {
+        foreach($payment_methods['country_names'] as $countryCode => $name) {
+            $payment_methods['country_names'][$countryCode] = $this->trans($name, [], 'Modules.Spellpayment.Front');
+        }
+    }
     /**
      * order state is some sort of unique identifier for our
      * module required to register payments during checkout
