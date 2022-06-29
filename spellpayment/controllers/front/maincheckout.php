@@ -16,7 +16,7 @@ use SpellPayment\Repositories\OrderIdToSpellUuid;
 
 class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontController
 {
-    const SPELL_MODULE_VERSION = 'v1.1.3';
+    const SPELL_MODULE_VERSION = 'v1.1.4';
 
     /**
      * Function for get amount of cart.
@@ -157,10 +157,11 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
         $nameString = '';
         if (count($products) > 0) {
             foreach ($products as $key => $product) {
+                $name=$product['name'].' x '.$product['quantity'];
                 if ($key == 0) {
-                    $nameString = $product['name'];
+                    $nameString = $name;
                 } else {
-                    $nameString = $nameString . ';' . $product['name'];
+                    $nameString = $nameString . '; ' . $name;
                 }
             }
         }

@@ -15,7 +15,7 @@ use SpellPayment\Repositories\OrderIdToSpellUuid;
 
 class spellpaymentpdpcheckoutModuleFrontController extends \ModuleFrontController
 {
-    const SPELL_MODULE_VERSION = 'v1.1.3';
+    const SPELL_MODULE_VERSION = 'v1.1.4';
     public function initContent()
     {
         parent::initContent();
@@ -212,10 +212,11 @@ class spellpaymentpdpcheckoutModuleFrontController extends \ModuleFrontControlle
         $nameString = '';
         if (count($products) > 0) {
             foreach ($products as $key => $product) {
+                $name=$product['name'].' x '.$product['quantity'];
                 if ($key == 0) {
-                    $nameString = $product['name'];
+                    $nameString = $name;
                 } else {
-                    $nameString = $nameString . ';' . $product['name'];
+                    $nameString = $nameString . '; ' . $name;
                 }
             }
         }
