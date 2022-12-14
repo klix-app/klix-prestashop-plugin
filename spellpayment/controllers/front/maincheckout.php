@@ -73,7 +73,7 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
             'success_callback' => $callback_url,
             'failure_redirect' => $failure_url,
             'cancel_redirect' => $cancel_url,
-            'creator_agent' => 'PrestashopModule ' . self::SPELL_MODULE_VERSION.' | Platform version: '._PS_VERSION_,
+            'creator_agent' => 'PrestashopModule ' . self::SPELL_MODULE_VERSION,
             'platform' => 'prestashop',
             'reference' => $order->reference,
             'purchase' => [
