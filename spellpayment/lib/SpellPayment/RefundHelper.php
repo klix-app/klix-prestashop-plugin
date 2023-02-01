@@ -6,6 +6,7 @@ use Configuration;
 use Currency;
 use Exception;
 use Order;
+use OrderHistory;
 use PrestaShopCollection;
 use PrestaShopException;
 use Tools;
@@ -40,6 +41,11 @@ class RefundHelper
         $spell = SpellHelper::getSpell($configValues);
         try {
             $result = $spell->refundPayment($payment_id, $refundData);
+            $history = new OrderHistory();
+            $history->id_order = (int)$order->id;
+            $history->changeIdOrderState(7, (int)($order->id));
+            $history->add(true);
+            $history->save();
             if (isset($result['__all__'])) {
                 $spell->logInfo(sprintf(
                     "payment not refunded: %s",

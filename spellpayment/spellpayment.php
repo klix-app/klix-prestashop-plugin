@@ -41,7 +41,7 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.1.6';
+        $this->version = '1.1.7';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->author = 'Klix';
         $this->controllers = ['validation'];
@@ -189,8 +189,10 @@ class SpellPayment extends PaymentModule
                 'pdpcheckout',
                 ['cart_id' => $this->context->cart->id]
             );
+            $one_click_button_enabled=Configuration::get('SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED',false);
             $this->context->smarty->assign([
-                'url' => $url
+                'url' => $url,
+                'one_click_button_enabled'=>$one_click_button_enabled
             ]);
             return $this->display(__FILE__, 'paynow.tpl');
         }
@@ -201,6 +203,7 @@ class SpellPayment extends PaymentModule
         if (false == \Configuration::get('SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED', false)) {
             return;
         }
+        $one_click_button_enabled=Configuration::get('SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED',false);
         $url = $this->context->link->getModuleLink(
             $this->name,
             'pdpcheckout',
@@ -208,6 +211,7 @@ class SpellPayment extends PaymentModule
         );
         $this->context->smarty->assign([
             'url' => $url,
+            'one_click_button_enabled'=>$one_click_button_enabled
         ]);
         return $this->display(__FILE__, 'paynow.tpl');
     }

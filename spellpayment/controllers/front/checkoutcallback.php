@@ -57,7 +57,7 @@ class SpellpaymentCheckoutcallbackModuleFrontController extends \ModuleFrontCont
             'id_cart'   => (int) $order->id_cart,
             'id_module' => (int) $this->module->id,
             'id_order'  => $order->id,
-            'key'       => $customer->secure_key,
+            'key'       => $order->secure_key,
         );
         return $this->context->link->getPageLink(
             'order-confirmation',
@@ -173,7 +173,7 @@ class SpellpaymentCheckoutcallbackModuleFrontController extends \ModuleFrontCont
                     'order',
                     true,
                     null,
-                    ['id_order' => $order->id]
+                    ['id_order' => $order->id,'secure_key' => $order->secure_key]
                 )
             ];
         } else {

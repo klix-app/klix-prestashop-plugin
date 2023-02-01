@@ -15,7 +15,7 @@ use SpellPayment\Repositories\OrderIdToSpellUuid;
 
 class spellpaymentpdpcheckoutModuleFrontController extends \ModuleFrontController
 {
-    const SPELL_MODULE_VERSION = 'v1.1.6';
+    const SPELL_MODULE_VERSION = 'v1.1.7';
     public function initContent()
     {
         parent::initContent();
