@@ -55,20 +55,6 @@ class SpellHelper
                     ],
                     [
                         'type' => 'text',
-                        'label' => 'Change payment method title',
-                        'name' => 'SPELLPAYMENT_METHOD_TITLE',
-                        'required' => false,
-                        'desc' => 'If not set, "Select payment method" will be used. Ignored if payment method selection is disabled.',
-                    ],
-                    [
-                        'type' => 'text',
-                        'label' => 'Change payment method description',
-                        'name' => 'SPELLPAYMENT_METHOD_DESCRIPTION',
-                        'required' => false,
-                        'desc' => 'If not set, "Choose payment method on next page" will be used. Ignored if payment method selection is enabled.',
-                    ],
-                    [
-                        'type' => 'text',
                         'label' => 'Brand ID',
                         'name' => 'SPELLPAYMENT_SHOP_ID',
                         'required' => true,
@@ -125,7 +111,7 @@ class SpellHelper
             }
         });
         if (!$secret_code || !$brand_id) {
-            throw new \Exception('Shop authentication token/brand id of Klix E-commerce gateway are not set');
+            throw new \Exception('Shop authentication token/brand id of Klix.app payments are not set');
         }
 
         return new SpellAPI($secret_code, $brand_id, $logger, $debug);

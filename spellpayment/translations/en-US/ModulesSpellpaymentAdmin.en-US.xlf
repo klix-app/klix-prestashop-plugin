@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" original="modules/spellpayment/spellpayment.php" target-language="lt-LT" datatype="plaintext">
+    <body>
+      <trans-unit id="klixAdmin-en-1">
+        <source>Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!</source>
+        <target>Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-2">
+        <source>Klix.app payments</source>
+        <target>Klix.app payments</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-3">
+        <source>Are you sure you want to delete Klix.app module?</source>
+        <target>Are you sure you want to delete Klix.app module?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-4">
+        <source>Enable API</source>
+        <target>Enable API</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-5">
+        <source>Enable payment method selection</source>
+        <target>Enable payment method selection</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-6">
+        <source>If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.</source>
+        <target>If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-7">
+        <source>Enable one click payment</source>
+        <target>Enable one click payment</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-8">
+        <source>Enable logging</source>
+        <target>Enable logging</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-9">
+        <source>Thanks for using Klix.app payments</source>
+        <target>Thanks for using Klix.app payments</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-en-10">
+        <source>Awaiting payment</source>
+        <target>Awaiting payment</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

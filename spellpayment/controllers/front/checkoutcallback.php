@@ -118,7 +118,7 @@ class SpellpaymentCheckoutcallbackModuleFrontController extends \ModuleFrontCont
             $this->context->cart->id,
             \Configuration::get('SPELLPAYMENT_STATE_WAITING'),
             $this->getAmount(),
-            'Klix E-commerce gateway',
+            'Klix.app payments',
             null,
             array(),
             (int)$currency->id,
@@ -148,7 +148,7 @@ class SpellpaymentCheckoutcallbackModuleFrontController extends \ModuleFrontCont
             }
         }
         if (!$relation = OrderIdToSpellUuid::getByOrderId($order_id)) {
-            return ['status' => 404, 'message' => 'No known Klix E-commerce gateway payments found for order #' . $order_id];
+            return ['status' => 404, 'message' => 'No known Klix.app payments found for order #' . $order_id];
         }
         $spell_payment_uuid = $relation['spell_payment_uuid'];
         $order = new \Order((int)$order_id);
@@ -158,7 +158,7 @@ class SpellpaymentCheckoutcallbackModuleFrontController extends \ModuleFrontCont
             $purchases = $spell->purchases($spell_payment_uuid);
         } catch (\Throwable $exc) {
             $order->setCurrentState(\Configuration::get('PS_OS_ERROR'));
-            return ['status' => 502, 'message' => 'Failed to retrieve purchases from Klix E-commerce gateway - ' . $exc->getMessage()];
+            return ['status' => 502, 'message' => 'Failed to retrieve purchases from Klix.app payments - ' . $exc->getMessage()];
         }
         $status = $purchases['status'] ?? null;
         $message = array_slice($purchases['transaction_data']['attempts'] ?? [], -1)[0]['error']['message'] ?? '';

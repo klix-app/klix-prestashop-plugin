@@ -3,7 +3,7 @@
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 
 if (!defined('_PS_VERSION_')) {
-    print('_PS_VERSION_ constant missing, quiting the Klix E-commerce gateway module');
+    print('_PS_VERSION_ constant missing, quiting the Klix.app payments module');
     exit;
 }
 
@@ -41,15 +41,19 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.1.7';
+        $this->version = '1.1.8';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
-        $this->author = 'Klix';
+        $this->author = 'Klix.app';
         $this->controllers = ['validation'];
         $this->need_instance = true;
         $this->currencies = true;
         $this->currencies_mode = 'checkbox';
         $this->bootstrap = true;
         $this->display = true;
+
+        $this->displayName=$this->trans('Klix.app payments',[],'Modules.Spellpayment.Admin');
+        $this->confirmUninstall=$this->trans('Are you sure you want to delete your details?',[],'Modules.Spellpayment.Admin');
+        $this->description=$this->trans('Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!',[],'Modules.Spellpayment.Admin');
 
         parent::__construct();
 
@@ -134,10 +138,23 @@ class SpellPayment extends PaymentModule
         } else {
             $order_state = new \OrderState($stateId);
         }
-        $order_state->name = [];
-        foreach (\Language::getLanguages() as $language) {
-            $order_state->name[$language['id_lang']] = 'Awaiting payment';
+
+        $translations = [
+            'en' => 'Awaiting payment',
+            'lt' => 'Laukiama apmokėjimo',
+            'ru' => 'Ожидание оплаты',
+            'ee' => 'Ootab makseid',
+            'lv'=> 'Maksājuma gaidīšana'
+        ];
+
+        $order_state->name=array();
+
+        $languages = Language::getLanguages();
+        foreach ($languages as $language) {
+            $order_state->name[$language['id_lang']] = $translations[$language['iso_code']];
         }
+        
+        $order_state->template='payment';
         $order_state->module_name = $this->name;
         $order_state->color       = "RoyalBlue";
         $order_state->unremovable = true;
@@ -266,6 +283,7 @@ class SpellPayment extends PaymentModule
     public function uninstall()
     {
         OrderIdToSpellUuid::drop();
+
         return $this->unregisterHook('paymentOptions')
             && $this->unregisterHook('displayProductAdditionalInfo')
             && $this->unregisterHook('displayNavFullWidth')
@@ -342,7 +360,13 @@ class SpellPayment extends PaymentModule
             $errorsHeaderHtml = '<div style="color: red">' . implode('<br/>', array_map('htmlspecialchars', $errors)) . '</div>';
         }
 
-        return $statusHtml . $errorsHeaderHtml . $helper->generateForm([SpellHelper::getConfigForm()]);
+        $configForm=SpellHelper::getConfigForm();
+
+        foreach ($configForm['form']['input'] as $key=>$value) {
+            $configForm['form']['input'][$key]['label']=$this->trans($value['label'],[],'Modules.Spellpayment.Admin');
+        }
+        
+        return $statusHtml . $errorsHeaderHtml . $helper->generateForm([$configForm]);
     }
 
     /** @return PaymentOption[] */
@@ -400,7 +424,7 @@ class SpellPayment extends PaymentModule
             return false;
         }
 
-        return 'Thanks for using Klix E-commerce gateway';
+        return $this->trans('Thanks for using Klix.app payments',[],'Modules.Spellpayment.Admin');
     }
     public function hookHeader($params)
     {

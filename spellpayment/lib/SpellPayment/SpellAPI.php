@@ -129,13 +129,13 @@ class SpellAPI
     public function logInfo($text)
     {
         if ($this->debug) {
-            $this->logger->log("Klix E-commerce gateway INFO: " . $text . ";");
+            $this->logger->log("Klix.app payments INFO: " . $text . ";");
         }
     }
 
     public function logError($error_text, $error_data = null)
     {
-        $error_text = "Klix E-commerce gateway ERROR: " . $error_text . ";";
+        $error_text = "Klix.app payments ERROR: " . $error_text . ";";
         if ($error_data) {
             $error_text .= " ERROR DATA: " . var_export($error_data, true) . ";";
         }

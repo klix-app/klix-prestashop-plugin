@@ -16,7 +16,7 @@ use SpellPayment\Repositories\OrderIdToSpellUuid;
 
 class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontController
 {
-    const SPELL_MODULE_VERSION = 'v1.1.7';
+    const SPELL_MODULE_VERSION = 'v1.1.8';
 
     /**
      * Function for get amount of cart.
@@ -185,7 +185,7 @@ class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontControll
             $this->context->cart->id,
             \Configuration::get('SPELLPAYMENT_STATE_WAITING'),
             $this->getAmount(),
-            'Klix E-commerce gateway',
+            $this->trans('Klix.app payments',[],'Modules.Spellpayment.Admin'),
             null,
             array(),
             (int)$currency->id,

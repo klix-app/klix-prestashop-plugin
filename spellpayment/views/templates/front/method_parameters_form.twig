@@ -100,7 +100,7 @@ window.addEventListener('load', () => {
         let error = {{ error|json_encode|raw }};
 
         if (error) {
-            console.debug('Klix E-commerce gateway error', error);
+            console.debug('Klix.app payments error', error);
             const selector = '.spellpayment-method-parameters .error-message-panel';
             [...document.querySelectorAll(selector)]
                 .forEach(pan => pan.textContent = error);

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" original="modules/spellpayment/spellpayment.php" target-language="lt-LT" datatype="plaintext">
+    <body>
+      <trans-unit id="klixAdmin-lt-1">
+        <source>Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!</source>
+        <target>Parduokite daugiau priimdami mokėjimus kortelėmis bei banko sąskaitomis ir suteikdami galimybę pirkti dabar, mokėti vėliau. Viskas per vieną integraciją!</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-2">
+        <source>Klix.app payments</source>
+        <target>Klix.app mokėjimai</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-3">
+        <source>Are you sure you want to delete Klix.app module?</source>
+        <target>Ar tikrai norite pašalinti Klix.app modulį?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-4">
+        <source>Enable API</source>
+        <target>Įjungti modulį</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-5">
+        <source>Enable payment method selection</source>
+        <target>Įjungti mokėjimo būdo pasirinkimą</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-6">
+        <source>If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.</source>
+        <target>Jei ši funkcija įjungta, pirkėjai galės pasirinkti norimą mokėjimo būdą tiesiogiai PrestaShop parduotuvėje.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-7">
+        <source>Enable one click payment</source>
+        <target>Įjungti mokėjimą vienu paspaudimu</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-8">
+        <source>Enable logging</source>
+        <target>Įjungti registravimo žurnalą</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-9">
+        <source>Thanks for using Klix.app payments</source>
+        <target>Dėkojame, kad naudojatės Klix.app</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-lt-10">
+        <source>Awaiting payment</source>
+        <target>Laukiama apmokėjimo</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
