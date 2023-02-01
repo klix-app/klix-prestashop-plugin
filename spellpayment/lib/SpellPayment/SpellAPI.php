@@ -141,4 +141,20 @@ class SpellAPI
         }
         $this->logger->log($error_text);
     }
+
+    
+    public function refundPayment($payment_id, $params)
+    {
+        $this->logInfo(sprintf("refunding payment: %s %s", $payment_id, var_export($params, true)));
+
+        $result = $this->call('POST', "/purchases/{$payment_id}/refund/", $params);
+
+        $this->logInfo(sprintf(
+            "payment refund result: %s",
+            var_export($result, true)
+        ));
+
+        return $result;
+    }
+
 }

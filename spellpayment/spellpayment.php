@@ -8,8 +8,12 @@ if (!defined('_PS_VERSION_')) {
 }
 
 require_once(__DIR__ . '/lib/SpellPayment/SpellHelper.php');
+require_once(__DIR__ . '/lib/SpellPayment/SpellAPI.php');
+require_once(__DIR__ . '/lib/SpellPayment/RefundHelper.php');
 
 use SpellPayment\SpellHelper;
+use SpellPayment\SpellAPI;
+use SpellPayment\RefundHelper;
 
 require_once(__DIR__ . '/lib/SpellPayment/Repositories/OrderIdToSpellUuid.php');
 
@@ -37,7 +41,7 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.1.5';
+        $this->version = '1.1.6';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->author = 'Klix';
         $this->controllers = ['validation'];
@@ -170,6 +174,7 @@ class SpellPayment extends PaymentModule
             && $this->registerHook('displayBeforeBodyClosingTag')
             && $this->registerHook('displayShoppingCartFooter')
             && $this->registerHook('Header')
+            && $this->registerHook('actionOrderSlipAdd')
             && $this->registerHook('paymentReturn');
     }
 
@@ -264,6 +269,7 @@ class SpellPayment extends PaymentModule
             && $this->unregisterHook('displayShoppingCartFooter')
             && $this->unregisterHook('paymentReturn')
             && $this->unregisterHook('Header')
+            && $this->unregisterHook('actionOrderSlipAdd')
             && parent::uninstall();
     }
 
@@ -399,4 +405,24 @@ class SpellPayment extends PaymentModule
         return '<script type="module" src="https://klix.blob.core.windows.net/public/pay-later-widget/build/klix-pay-later-widget.esm.js"></script>
         <script nomodule="" src="https://klix.blob.core.windows.net/public/pay-later-widget/build/klix-pay-later-widget.js"></script>';
     }
+
+    /**
+     * Process the refund
+     *
+     * @param array $params
+     *
+     * @return bool
+     */
+    public function hookActionOrderSlipAdd(array $params): bool
+    {
+        $spellRefund = new RefundHelper();
+        $order = $params['order'];
+        $productList = $params['productList'];
+        $payment_id = $spellRefund->isRefundAllow($order,$productList);
+        if (!$payment_id){
+            return false;
+        }
+        return $spellRefund->processRefund($order,$productList,$payment_id);
+    }
+
 }
