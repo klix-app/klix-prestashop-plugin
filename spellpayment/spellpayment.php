@@ -35,7 +35,7 @@ class SpellPayment extends PaymentModule
 
     public $displayName = 'Klix E-commerce gateway';
     public $description = 'Klix E-commerce gateway';
-    public $confirmUninstall = 'Are you sure you want to delete your details?';
+    public $confirmUninstall = 'Are you sure you want to delete Klix.app module?';
 
     public function __construct()
     {
@@ -52,7 +52,7 @@ class SpellPayment extends PaymentModule
         $this->display = true;
 
         $this->displayName=$this->trans('Klix.app payments',[],'Modules.Spellpayment.Admin');
-        $this->confirmUninstall=$this->trans('Are you sure you want to delete your details?',[],'Modules.Spellpayment.Admin');
+        $this->confirmUninstall=$this->trans('Are you sure you want to delete Klix.app module?',[],'Modules.Spellpayment.Admin');
         $this->description=$this->trans('Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!',[],'Modules.Spellpayment.Admin');
 
         parent::__construct();
