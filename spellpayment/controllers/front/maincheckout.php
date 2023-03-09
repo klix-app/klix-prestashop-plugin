@@ -16,7 +16,7 @@ use SpellPayment\Repositories\OrderIdToSpellUuid;
 
 class SpellpaymentMaincheckoutModuleFrontController extends \ModuleFrontController
 {
-    const SPELL_MODULE_VERSION = 'v1.2.0';
+    const SPELL_MODULE_VERSION = 'v1.2.1';
 
     /**
      * Function for get amount of cart.

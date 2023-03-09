@@ -41,7 +41,7 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.2.0';
+        $this->version = '1.2.1';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->author = 'Klix.app';
         $this->controllers = ['validation'];
