@@ -177,8 +177,23 @@ class SpellpaymentCheckoutcallbackModuleFrontController extends \ModuleFrontCont
                 )
             ];
         } else {
-            if ($order->getCurrentState() != \Configuration::get('PS_OS_PAYMENT')) {
-                // sends email email, so we want to ensure it's called just once on either redirect or API callback
+            //purchase is paid
+            
+            $context = Context::getContext();
+            $language_id = $context->language->id;  
+
+            if(isset($_REQUEST['id_lang']) and !isset($language_id)){
+                $language_id=$_REQUEST['id_lang'];
+            }
+            
+            $order_histories = $order->getHistory($language_id);
+
+            $state_ids = array();
+            foreach ($order_histories as $history) {
+                $state_ids[] = $history['id_order_state'];
+            }
+            //if order already had a PAID status it will not change order status to PAID
+            if (!in_array(\Configuration::get('PS_OS_PAYMENT'),$state_ids) ) {
                 $order->setCurrentState(\Configuration::get('PS_OS_PAYMENT'));
             }
             $redirect_url = $this->makeSuccessPageUrl($order);

@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en-US" original="modules/spellpayment/spellpayment.php" target-language="en-US" datatype="plaintext">
+  <file source-language="en-US" original="modules/spellpayment/spellpayment.php" target-language="lv-LV" datatype="plaintext">
     <body>
-      <trans-unit id="klixAdmin-en-1">
+      <trans-unit id="klixAdmin-lv-1">
         <source>Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!</source>
-        <target>Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!</target>
+        <target>Pārdodiet vairāk, pieņemot maksājumus ar kartēm, bankas saitēm un pērc tagad, maksā vēlāk nomaksu. Tas viss, izmantojot vienu integrāciju!</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-2">
+      <trans-unit id="klixAdmin-lv-2">
         <source>Klix.app payments</source>
-        <target>Klix.app payments</target>
+        <target>Klix.app maksājumi</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-3">
+      <trans-unit id="klixAdmin-lv-3">
         <source>Are you sure you want to delete Klix.app module?</source>
-        <target>Are you sure you want to delete Klix.app module?</target>
+        <target>Vai esat pārliecināts, ka vēlaties dzēst Klix.app moduli?</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-4">
+      <trans-unit id="klixAdmin-lv-4">
         <source>Enable API</source>
-        <target>Enable API</target>
+        <target>Aktivizēt API</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-5">
+      <trans-unit id="klixAdmin-lv-5">
         <source>Enable payment method selection</source>
-        <target>Enable payment method selection</target>
+        <target>Iespējot maksājumu metodes izvēli</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-6">
+      <trans-unit id="klixAdmin-lv-6">
         <source>If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.</source>
-        <target>If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.</target>
+        <target>Ja iespējota, pircēji varēs izvēlēties vēlamo maksājuma metodi pašā PrestaShop.</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-7">
+      <trans-unit id="klixAdmin-lv-7">
         <source>Enable one click payment</source>
-        <target>Enable one click payment</target>
+        <target>Ieslēgt viena klikšķa maksājumus</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-8">
+      <trans-unit id="klixAdmin-lv-8">
         <source>Enable logging</source>
-        <target>Enable logging</target>
+        <target>Ieslēgt žurnālošanu</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-9">
+      <trans-unit id="klixAdmin-lv-9">
         <source>Thanks for using Klix.app payments</source>
-        <target>Thanks for using Klix.app payments</target>
+        <target>Paldies, ka izmantojat Klix.app maksājumus</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="klixAdmin-en-10">
+      <trans-unit id="klixAdmin-lv-10">
         <source>Awaiting payment</source>
-        <target>Awaiting payment</target>
+        <target>Gaida maksājumu</target>
         <note>Line: </note>
       </trans-unit>
     </body>

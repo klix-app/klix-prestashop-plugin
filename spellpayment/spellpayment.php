@@ -41,7 +41,7 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.1.8';
+        $this->version = '1.2.0';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->author = 'Klix.app';
         $this->controllers = ['validation'];
@@ -93,9 +93,21 @@ class SpellPayment extends PaymentModule
 
         $currency = \Context::getContext()->currency->iso_code;
         $spell = SpellHelper::getSpell($configValues);
+
+        $amount=7000;
+        
+        if (isset($params['cart']) && $params['cart']->id) {
+            $cart = $params['cart'];
+            $total = $cart->getOrderTotal(true, Cart::BOTH);
+            if($total!=0) {
+                $amount=round($total,2)*100;
+            }
+        }
+
         $payment_methods = $spell->paymentMethods(
             $currency,
-            SpellHelper::parseLanguage(\Context::getContext()->language->iso_code)
+            SpellHelper::parseLanguage(\Context::getContext()->language->iso_code),
+            $amount
         );
         $msgItem = $payment_methods['__all__'][0] ?? null;
         if ('authentication_failed' === ($msgItem['code'] ?? null)) {

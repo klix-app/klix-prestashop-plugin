@@ -25,12 +25,12 @@ class SpellAPI
         return $this->call('POST', '/purchases/', $params);
     }
 
-    public function paymentMethods($currency, $language)
+    public function paymentMethods($currency, $language, $amount)
     {
         $this->logInfo("fetching payment methods");
         return $this->call(
             'GET',
-            "/payment_methods/?brand_id={$this->brand_id}&currency={$currency}&language={$language}"
+            "/payment_methods/?brand_id={$this->brand_id}&currency={$currency}&language={$language}&amount={$amount}"
         );
     }
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-US" original="modules/spellpayment/spellpayment.php" target-language="ru-RU" datatype="plaintext">
+    <body>
+      <trans-unit id="klixAdmin-ru-1">
+        <source>Sell more by accepting payments via cards, bank accounts and buy now, pay later instalments. All via a single integration!</source>
+        <target>Продавайте больше, принимая оплату картами, банковскими ссылками и в рассрочку. Всё в одной интеграции!</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-2">
+        <source>Klix.app payments</source>
+        <target>Klix.app платежи</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-3">
+        <source>Are you sure you want to delete Klix.app module?</source>
+        <target>Вы уверены, что хотите удалить модуль Klix.app?</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-4">
+        <source>Enable API</source>
+        <target>Включить API</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-5">
+        <source>Enable payment method selection</source>
+        <target>Включить выбор способа оплаты</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-6">
+        <source>If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.</source>
+        <target>Если эта функция включена, покупатели смогут выбрать желаемый способ оплаты непосредственно в PrestaShop.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-7">
+        <source>Enable one click payment</source>
+        <target>Включить оплату в один клик</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-8">
+        <source>Enable logging</source>
+        <target>Включить ведение журнала</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-9">
+        <source>Thanks for using Klix.app payments</source>
+        <target>Спасибо за использование платежей Klix.app</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="klixAdmin-ru-10">
+        <source>Awaiting payment</source>
+        <target>Ожидание оплаты</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
