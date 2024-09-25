@@ -41,7 +41,7 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.2.2';
+        $this->version = '1.2.3';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->author = 'Klix.app';
         $this->controllers = ['validation'];
@@ -155,7 +155,7 @@ class SpellPayment extends PaymentModule
             'en' => 'Awaiting payment',
             'lt' => 'Laukiama apmokėjimo',
             'ru' => 'Ожидание оплаты',
-            'ee' => 'Ootab makseid',
+            'et' => 'Ootab makseid',
             'lv'=> 'Maksājuma gaidīšana'
         ];
 
