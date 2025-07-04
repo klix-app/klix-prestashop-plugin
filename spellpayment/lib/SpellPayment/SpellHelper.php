@@ -24,56 +24,56 @@ class SpellHelper
                     'icon' => 'icon-cogs'
                 ],
                 'input' => [
-                    [
-                        'type' => 'switch',
-                        'label' => 'Enable API',
-                        'name' => 'SPELLPAYMENT_ACTIVE_MODE',
-                        'is_bool' => true,
-                        'values' => [
-                            ['value' => true],
-                            ['value' => false],
-                        ],
+                [
+                    'type' => 'switch',
+                    'label' => 'Enable API',
+                    'name' => 'SPELLPAYMENT_ACTIVE_MODE',
+                    'is_bool' => true,
+                    'values' => [
+                        ['value' => true, 'id' => 'KLIX_SPELLPAYMENT_ACTIVE_MODE_TRUE'],
+                        ['value' => false, 'id' => 'KLIX_SPELLPAYMENT_ACTIVE_MODE_FALSE'],
                     ],
-                    [
-                        'type' => 'switch',
-                        'label' => 'Enable payment method selection',
-                        'name' => 'SPELLPAYMENT_METHOD_SELECTION_ENABLED',
-                        'values' => [
-                            ['value' => true],
-                            ['value' => false],
-                        ],
-                        'desc' => 'If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.',
+                ],
+                [
+                    'type' => 'switch',
+                    'label' => 'Enable payment method selection',
+                    'name' => 'SPELLPAYMENT_METHOD_SELECTION_ENABLED',
+                    'values' => [
+                        ['value' => true, 'id' => 'KLIX_SPELLPAYMENT_METHOD_SELECTION_ENABLED_TRUE'],
+                        ['value' => false, 'id' => 'KLIX_SPELLPAYMENT_METHOD_SELECTION_ENABLED_FALSE'],
                     ],
-                    [
-                        'type' => 'switch',
-                        'label' => 'Enable one click payment',
-                        'name' => 'SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED',
-                        'values' => [
-                            ['value' => true],
-                            ['value' => false],
-                        ],
+                    'desc' => 'If enabled, buyers will be able to choose the desired payment method directly in PrestaShop.',
+                ],
+                [
+                    'type' => 'switch',
+                    'label' => 'Enable one click payment',
+                    'name' => 'SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED',
+                    'values' => [
+                        ['value' => true, 'id' => 'KLIX_SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED_TRUE'],
+                        ['value' => false, 'id' => 'KLIX_SPELLPAYMENT_ONE_CLICK_PAYMENT_ENABLED_FALSE'],
                     ],
-                    [
-                        'type' => 'text',
-                        'label' => 'Brand ID',
-                        'name' => 'SPELLPAYMENT_SHOP_ID',
-                        'required' => true,
+                ],
+                [
+                    'type' => 'text',
+                    'label' => 'Brand ID',
+                    'name' => 'SPELLPAYMENT_SHOP_ID',
+                    'required' => true,
+                ],
+                [
+                    'type' => 'text',
+                    'label' => 'Secret key',
+                    'name' => 'SPELLPAYMENT_SHOP_PASS',
+                    'required' => true,
+                ],
+                [
+                    'type' => 'switch',
+                    'label' => 'Enable logging',
+                    'name' => 'SPELLPAYMENT_ENABLE_LOGGING',
+                    'values' => [
+                        ['value' => true, 'id' => 'KLIX_SPELLPAYMENT_ENABLE_LOGGING_TRUE'],
+                        ['value' => false, 'id' => 'KLIX_SPELLPAYMENT_ENABLE_LOGGING_FALSE'],
                     ],
-                    [
-                        'type' => 'text',
-                        'label' => 'Secret key',
-                        'name' => 'SPELLPAYMENT_SHOP_PASS',
-                        'required' => true,
-                    ],
-                    [
-                        'type' => 'switch',
-                        'label' => 'Enable logging',
-                        'name' => 'SPELLPAYMENT_ENABLE_LOGGING',
-                        'values' => [
-                            ['value' => true],
-                            ['value' => false],
-                        ],
-                    ],
+                ],
                 ],
                 'submit' => [
                     'title' => 'Save',

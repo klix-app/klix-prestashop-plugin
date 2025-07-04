@@ -41,7 +41,7 @@ class SpellPayment extends PaymentModule
     {
         $this->name = 'spellpayment';
         $this->tab = 'payments_gateways';
-        $this->version = '1.2.3';
+        $this->version = '1.2.4';
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->author = 'Klix.app';
         $this->controllers = ['validation'];
@@ -122,6 +122,7 @@ class SpellPayment extends PaymentModule
 
         $payment_method_title = $this->trans('Select payment method', [], 'Modules.Spellpayment.Front');
         $payment_method_description = $this->trans('Choose payment method on next page', [], 'Modules.Spellpayment.Front');
+        $payment_method_legend = $this->trans('Klix.app payments', [], 'Modules.Spellpayment.Admin');
 
         return [
             'title' => $payment_method_selection_enabled ? $payment_method_title : $payment_method_description,
@@ -131,6 +132,7 @@ class SpellPayment extends PaymentModule
             'by_method' => SpellHelper::collectByMethod($payment_methods['by_country']),
             '$params' => $params,
             'selected_country' => SpellHelper::getPreselectedCountry($this->getDetectedCountry(), $country_options),
+            'payment_method_legend' => $payment_method_legend,
         ];
     }
     private function translateCountryNames(&$payment_methods) {
@@ -156,7 +158,9 @@ class SpellPayment extends PaymentModule
             'lt' => 'Laukiama apmokėjimo',
             'ru' => 'Ожидание оплаты',
             'et' => 'Ootab makseid',
-            'lv'=> 'Maksājuma gaidīšana'
+            'lv'=> 'Maksājuma gaidīšana',
+            'gb'=> 'Awaiting payment',
+            'us'=> 'Awaiting payment'
         ];
 
         $order_state->name=array();

@@ -9,63 +9,77 @@
     <div class="form-horizontal spell-payment">
         {% if payment_method_selection_enabled %}
             <div class="payment-method-select">
-                <div data-countries-available="{{ country_options|length }}">
-                    <label>
-                        <select name="country" class="form-control" id="spell-country" title="Country">
-                            {% for country in country_options %}
-                                <option
-                                        value="{{ country }}"
-                                        {% if country == "any" %}selected="selected"{% endif %}
-                                >
-                                    {{ payment_methods_api_data.country_names[country] }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </label>
-                </div>
+                <fieldset>
+                    <legend>{{ payment_method_legend }}</legend>
+                    <div data-countries-available="{{ country_options|length }}">
+                        <label for="spell-country">
+                            <select name="country" class="spell-form-control" id="spell-country" title="Country">
+                                {% for country in country_options %}
+                                    <option
+                                            value="{{ country }}"
+                                            {% if country == "any" %}selected="selected"{% endif %}
+                                    >
+                                        {{ payment_methods_api_data.country_names[country] }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
 
                 <span class="payment-method-list">
-                {% for key, data in by_method %}
-                    <label style="padding: 1em; width: 250px;">
-                        <input type="radio"
-                               required="required"
-                               name="spell_payment_method"
-                               class="spell-payment-method"
-                               value="{{ data.payment_method }}"
-                               data-countries="{{ data.countries|json_encode|escape }}"
-                        />
-                        <div style="font-size: 14px;">{{ payment_methods_api_data.names[data.payment_method] }}</div>
-                        {% set logo = payment_methods_api_data.logos[data.payment_method] %}
-                        {% if logo is not iterable %}
-                            <div>
-                                <img src="https://portal.klix.app{{ logo }}"
-                                      height='30' style='max-width: 160px; max-height: 30px; margin-bottom: 18px;'
+                        {% for key, data in by_method %}
+                            <label style="padding: 1em; width: 250px;" for="spell_payment_method_{{ data.payment_method }}">
+                                <input 
+                                    id="spell_payment_method_{{ data.payment_method }}"
+                                    type="radio"
+                                    required="required"
+                                    name="spell_payment_method"
+                                    class="spell-payment-method"
+                                    value="{{ data.payment_method }}"
+                                    data-countries="{{ data.countries|json_encode|escape }}"
                                 />
-                            </div>
-                        {%  else %}
-                            <span style="display: block;
-                                  padding-bottom: 3px;
-                                  min-width: 200px;
-                                  max-width: 200px;"
-                            >
-                                {% for i in logo %}
-                                    <img src="https://portal.klix.app{{ i }}"
-                                         width="40" height="35"
-                                         style="margin: 0 10px 10px 0; float: left;"
-                                    />
-                                {% endfor %}
-                                <div class="clear-div"></div>
-                            </span>
-                        {% endif %}
-                    </label>
-                {% endfor %}
-                </span>
+                                <div style="font-size: 14px;">{{ payment_methods_api_data.names[data.payment_method] }}</div>
+                                {% set logo = payment_methods_api_data.logos[data.payment_method] %}
+                                {% if logo is not iterable %}
+                                    <div>
+                                        <img src="https://portal.klix.app{{ logo }}"
+                                             height='30' style='max-width: 160px; max-height: 30px; margin-bottom: 18px;'
+                                             alt="{{ payment_methods_api_data.names[data.payment_method] }}"
+                                        />
+                                    </div>
+                                {% else %}
+                                    <span style="display: block;
+                                          padding-bottom: 3px;
+                                          min-width: 200px;
+                                          max-width: 200px;"
+                                    >
+                                        {% for i in logo %}
+                                            <img src="https://portal.klix.app{{ i }}"
+                                                 width="40" height="35"
+                                                 style="margin: 0 10px 10px 0; float: left;"
+                                                 alt="{{ payment_methods_api_data.names[data.payment_method] }}"
+                                            />
+                                        {% endfor %}
+                                        <div class="clear-div"></div>
+                                    </span>
+                                {% endif %}
+                            </label>
+                        {% endfor %}
+                    </span>
+                </fieldset>
             </div>
         {% endif %}
     </div>
 
-<script>
-window.addEventListener('load', () => {
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('.spellpayment-method-parameters');
+    if (form) {
+        const buttons = form.querySelectorAll('button[type="submit"][id^="pay-with-payment-option-"]');
+        buttons.forEach(button => {
+            button.remove();
+        });
+    }
     const spellFilterPMs = (spellCountryInp) => {
         const selected = spellCountryInp.value;
         const els = document.getElementsByClassName("spell-payment-method");
@@ -97,7 +111,7 @@ window.addEventListener('load', () => {
     };
 
     const main = () => {
-        let error = {{ error|json_encode|raw }};
+        let error = null;
 
         if (error) {
             console.debug('Klix.app payments error', error);
@@ -116,44 +130,55 @@ window.addEventListener('load', () => {
 
     main();
 });
-</script>
+    </script>
 
-<style>
-    .spell-payment {
-        padding: 0px 0px;
-    }
-    .spell-payment .payment-method-select {
-        background-color: transparent;
-        padding: 8px;
-    }
-    .spell-payment .payment-method-select > [data-countries-available] {
-        margin-left: 8px;
-        margin-top: 4px;
-    }
-    .spell-payment .payment-method-select > [data-countries-available="1"],
-    .spell-payment .payment-method-select > [data-countries-available="0"] {
-        display: none;
-    }
-    .spell-payment .payment-method-list {
-        display: flex;
-        flex-flow: row wrap;
-        margin: 8px;
-    }
-    .spell-payment .payment-method-list > label {
-        text-align: left;
-        /* background-color: #dedede; */
-        margin-right: 8px;
-        border-radius: 15px;
-        padding: 6px;
-    }
-    .spell-payment .payment-method-list .clear-div {
-        clear: both;
-        background-color: transparent;
-    }
-    input[type="radio"][name="payment_method"][value="spell_payment"]:not(:checked) + * .payment-method-select {
-        opacity: 0.2;
-        pointer-events: none;
-    }
-</style>
+    <style>
+        .spell-payment {
+            padding: 0px 0px;
+        }
+        .spell-payment .payment-method-select {
+            background-color: transparent;
+            padding: 8px;
+        }
+        .spell-payment .payment-method-select > [data-countries-available] {
+            margin-left: 8px;
+            margin-top: 4px;
+        }
+        .spell-payment .payment-method-select > [data-countries-available="1"],
+        .spell-payment .payment-method-select > [data-countries-available="0"] {
+            display: none;
+        }
+        .spell-payment .payment-method-list {
+            display: flex;
+            flex-flow: row wrap;
+            margin: 8px;
+        }
+        .spell-payment .payment-method-list > label {
+            text-align: left;
+            margin-right: 8px;
+            border-radius: 15px;
+            padding: 6px;
+        }
+        .spell-payment .payment-method-list .clear-div {
+            clear: both;
+            background-color: transparent;
+        }
+        input[type="radio"][name="payment_method"][value="spell_payment"]:not(:checked) + * .payment-method-select {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+        .spell-form-control {
+            color: #000000;
+            background-color: #FFFFFF;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #333333;
+            border-radius: 4px;
+        }
+        .spell-form-control:focus {
+            border-color: #0055AA;
+            box-shadow: 0 0 5px rgba(0, 85, 170, 0.5);
+        }
+    </style>
 
 </form>
